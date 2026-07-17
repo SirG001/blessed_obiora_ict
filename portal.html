@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — Blessed Obiora ICT Limited</title>
+    <meta name="description" content="Access your Blessed Obiora ICT wallet, fund your account, and pay for services instantly.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Paystack Inline JS -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <!-- Portal Stylesheet -->
+    <link rel="stylesheet" href="./portal.css">
+</head>
+<body>
+
+<!-- =====================================================================
+     AUTH PAGE
+     ===================================================================== -->
+<div id="auth-page" class="hidden">
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <img src="./logo.png" alt="Blessed Obiora ICT">
+            <span class="auth-logo-text">Blessed Obiora <em>ICT</em></span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="auth-tabs">
+            <div class="auth-tab active" data-tab="login">Sign In</div>
+            <div class="auth-tab" data-tab="register">Create Account</div>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form class="auth-form active" id="login-form" novalidate>
+            <div id="login-error" class="auth-error"></div>
+
+            <div class="auth-field">
+                <label for="login-email">Email Address</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-envelope f-icon"></i>
+                    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="login-pw">Password</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-lock f-icon"></i>
+                    <input type="password" id="login-pw" placeholder="Enter your password" autocomplete="current-password" required>
+                    <button type="button" class="auth-toggle-pw" aria-label="Toggle password">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="login-btn" class="auth-submit">
+                <span class="s-text"><i class="fa-solid fa-right-to-bracket"></i>&nbsp; Sign In</span>
+                <span class="s-spinner"></span>
+            </button>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form class="auth-form" id="register-form" novalidate>
+            <div id="reg-error" class="auth-error"></div>
+
+            <div class="auth-field">
+                <label for="reg-name">Full Name</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-user f-icon"></i>
+                    <input type="text" id="reg-name" placeholder="John Doe" autocomplete="name" required>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="reg-email">Email Address</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-envelope f-icon"></i>
+                    <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="reg-phone">Phone Number</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-phone f-icon"></i>
+                    <input type="tel" id="reg-phone" placeholder="08012345678" autocomplete="tel" required>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="reg-pw">Password</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-lock f-icon"></i>
+                    <input type="password" id="reg-pw" placeholder="Min. 6 characters" autocomplete="new-password" required>
+                    <button type="button" class="auth-toggle-pw" aria-label="Toggle password">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="auth-field">
+                <label for="reg-pw2">Confirm Password</label>
+                <div class="auth-field-wrap">
+                    <i class="fa-solid fa-lock f-icon"></i>
+                    <input type="password" id="reg-pw2" placeholder="Repeat your password" autocomplete="new-password" required>
+                    <button type="button" class="auth-toggle-pw" aria-label="Toggle password">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="reg-btn" class="auth-submit">
+                <span class="s-text"><i class="fa-solid fa-user-plus"></i>&nbsp; Create Account</span>
+                <span class="s-spinner"></span>
+            </button>
+        </form>
+
+        <!-- Switch hints -->
+        <p class="auth-note" id="login-note">Don't have an account? <span id="go-register">Register here</span></p>
+        <p class="auth-note hidden" id="register-note">Already have an account? <span id="go-login">Sign in</span></p>
+
+    </div>
+</div><!-- /#auth-page -->
+
+
+<!-- =====================================================================
+     USER PORTAL DASHBOARD
+     ===================================================================== -->
+<div id="portal" class="hidden">
+
+    <div class="p-sidebar-overlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="p-sidebar">
+
+        <!-- Brand -->
+        <div class="p-sidebar-brand">
+            <img src="./logo.png" alt="Blessed Obiora ICT">
+            <div class="p-brand-name">Blessed Obiora <em>ICT</em></div>
+        </div>
+
+        <!-- User info -->
+        <div class="p-user-block">
+            <div class="p-avatar-lg p-user-avatar-init">U</div>
+            <div class="p-user-name p-user-name-display">User</div>
+            <div class="p-user-email p-user-email-display">user@example.com</div>
+        </div>
+
+        <!-- Mini wallet balance -->
+        <div class="p-sidebar-wallet">
+            <div>
+                <div class="p-wallet-label">Wallet Balance</div>
+                <div class="p-wallet-mini-balance">₦0.00</div>
+            </div>
+            <i class="fa-solid fa-wallet" style="color:var(--p-green); font-size:1.2rem;"></i>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-nav">
+            <div class="p-nav-label">Menu</div>
+            <a class="p-nav-link active" data-section="overview">
+                <i class="fa-solid fa-gauge-high"></i> Overview
+            </a>
+            <a class="p-nav-link" data-section="services">
+                <i class="fa-solid fa-layer-group"></i> Services
+            </a>
+            <a class="p-nav-link" data-section="transactions">
+                <i class="fa-solid fa-receipt"></i> Transactions
+            </a>
+
+            <div class="p-nav-label" style="margin-top:8px;">Quick Actions</div>
+            <a class="p-nav-link open-fund-wallet">
+                <i class="fa-solid fa-plus-circle"></i> Fund Wallet
+            </a>
+            <a class="p-nav-link" href="./index.html">
+                <i class="fa-solid fa-globe"></i> Main Website
+            </a>
+        </nav>
+
+        <div class="p-sidebar-footer">
+            <button class="p-logout-btn do-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="p-main">
+
+        <!-- Header bar -->
+        <header class="p-header">
+            <div class="p-header-left">
+                <button class="p-hamburger" style="display:none" aria-label="Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <div class="p-page-title" id="p-page-title">Overview</div>
+                    <div class="p-page-sub" id="p-page-sub">Your wallet &amp; activity summary</div>
+                </div>
+            </div>
+            <div class="p-header-right">
+                <div class="p-header-name p-user-name-display" style="font-size:0.88rem; font-weight:600;"></div>
+                <div class="p-header-avatar p-user-avatar-init">U</div>
+            </div>
+        </header>
+
+        <!-- Page body -->
+        <div class="p-body">
+
+            <!-- ============ OVERVIEW SECTION ============ -->
+            <div class="p-section active" data-section="overview">
+
+                <!-- Wallet Hero Card -->
+                <div class="wallet-hero">
+                    <div class="wallet-hero-top">
+                        <div>
+                            <div class="wallet-hero-label">
+                                <i class="fa-solid fa-wallet" style="margin-right:6px;opacity:0.7;"></i>
+                                Wallet Balance
+                            </div>
+                            <div class="wallet-balance-amount p-balance-display">
+                                <span class="currency">₦</span>0.00
+                            </div>
+                        </div>
+                        <button class="wallet-fund-btn open-fund-wallet">
+                            <i class="fa-solid fa-plus"></i> Fund Wallet
+                        </button>
+                    </div>
+                    <div class="wallet-hero-bottom">
+                        <div class="wallet-stat">
+                            <div class="wallet-stat-val" id="hero-funded">₦0.00</div>
+                            <div class="wallet-stat-lbl">Total Funded</div>
+                        </div>
+                        <div class="wallet-divider"></div>
+                        <div class="wallet-stat">
+                            <div class="wallet-stat-val" id="hero-spent">₦0.00</div>
+                            <div class="wallet-stat-lbl">Total Spent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats row -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card-icon green"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                        <div>
+                            <div class="stat-card-val" id="stat-funded">₦0.00</div>
+                            <div class="stat-card-lbl">Total Funded</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon red"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                        <div>
+                            <div class="stat-card-val" id="stat-spent">₦0.00</div>
+                            <div class="stat-card-lbl">Total Spent</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon gold"><i class="fa-solid fa-box-archive"></i></div>
+                        <div>
+                            <div class="stat-card-val" id="stat-orders">0</div>
+                            <div class="stat-card-lbl">Service Orders</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent transactions on overview -->
+                <div class="p-txn-head">
+                    <div class="p-txn-title">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Transactions
+                    </div>
+                    <a class="p-nav-link" data-section="transactions"
+                       onclick="navigateTo('transactions')"
+                       style="font-size:0.82rem; color:var(--p-primary); cursor:pointer; padding:4px 8px;">
+                        View All →
+                    </a>
+                </div>
+                <div id="txn-container"></div>
+            </div>
+
+            <!-- ============ SERVICES SECTION ============ -->
+            <div class="p-section" data-section="services">
+                <div class="p-txn-head" style="margin-bottom:20px;">
+                    <div class="p-txn-title">
+                        <i class="fa-solid fa-layer-group"></i> Available Services
+                    </div>
+                    <span style="font-size:0.82rem; color:var(--p-muted);">8 services · Pay instantly from wallet</span>
+                </div>
+                <div class="p-services-grid" id="services-grid"></div>
+            </div>
+
+            <!-- ============ TRANSACTIONS SECTION ============ -->
+            <div class="p-section" data-section="transactions">
+                <div class="p-txn-head">
+                    <div class="p-txn-title">
+                        <i class="fa-solid fa-receipt"></i> Transaction History
+                    </div>
+                </div>
+                <div id="txn-container-full"></div>
+            </div>
+
+        </div><!-- /.p-body -->
+    </main>
+</div><!-- /#portal -->
+
+
+<!-- =====================================================================
+     FUND WALLET MODAL
+     ===================================================================== -->
+<div class="p-modal-overlay" id="fund-modal">
+    <div class="p-modal">
+        <div class="p-modal-head">
+            <div class="p-modal-title">
+                <i class="fa-solid fa-wallet" style="color:var(--p-primary);"></i>
+                Fund Your Wallet
+            </div>
+            <button class="p-modal-close" id="fund-modal-close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <label class="fw-amount-label" for="fw-amount">Select or Enter Amount (₦)</label>
+        <div class="fw-presets">
+            <button class="fw-preset" data-amount="500">₦500</button>
+            <button class="fw-preset" data-amount="1000">₦1,000</button>
+            <button class="fw-preset" data-amount="2000">₦2,000</button>
+            <button class="fw-preset" data-amount="5000">₦5,000</button>
+            <button class="fw-preset" data-amount="10000">₦10,000</button>
+            <button class="fw-preset" data-amount="20000">₦20,000</button>
+        </div>
+
+        <div class="fw-input-wrap">
+            <span class="fw-currency">₦</span>
+            <input type="number" id="fw-amount" class="fw-input" placeholder="0" min="500" step="100">
+        </div>
+        <p class="fw-hint"><i class="fa-solid fa-circle-info" style="margin-right:4px;"></i>Minimum top-up: ₦500 · Payments secured by Paystack</p>
+
+        <button id="fw-pay-btn" class="fw-paystack-btn">
+            <span class="s-text">
+                <i class="fa-solid fa-lock"></i> Proceed to Pay via Paystack
+            </span>
+            <span class="s-spinner"></span>
+        </button>
+    </div>
+</div>
+
+
+<!-- =====================================================================
+     CONFIRM PAYMENT MODAL
+     ===================================================================== -->
+<div class="p-modal-overlay" id="confirm-modal">
+    <div class="p-modal">
+        <div class="p-modal-head">
+            <div class="p-modal-title">
+                <i class="fa-solid fa-circle-check" style="color:var(--p-green);"></i>
+                Confirm Payment
+            </div>
+            <button class="p-modal-close" id="cp-modal-close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="cp-svc-info">
+            <div class="cp-icon" id="cp-icon"></div>
+            <div class="cp-svc-name" id="cp-svc-name">Service Name</div>
+            <div class="cp-price" id="cp-price">₦0.00</div>
+        </div>
+
+        <div class="cp-breakdown">
+            <div class="cp-row">
+                <span class="cp-row-label">Your Wallet Balance</span>
+                <span class="cp-row-val" id="cp-balance">₦0.00</span>
+            </div>
+            <div class="cp-row">
+                <span class="cp-row-label">Service Fee</span>
+                <span class="cp-row-val" id="cp-price-row">₦0.00</span>
+            </div>
+            <div class="cp-row">
+                <span class="cp-row-label">Balance After Payment</span>
+                <span class="cp-row-val after" id="cp-after">₦0.00</span>
+            </div>
+        </div>
+
+        <div class="cp-insufficient-msg" id="cp-insufficient">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Insufficient wallet balance. Please fund your wallet first.
+        </div>
+
+        <div class="p-modal-actions">
+            <button class="p-modal-cancel" id="cp-cancel-btn">Cancel</button>
+            <button class="p-modal-confirm" id="cp-confirm-btn">
+                <i class="fa-solid fa-wallet"></i> Pay Now
+            </button>
+            <button class="fund-instead hidden" id="cp-fund-btn">
+                <i class="fa-solid fa-plus"></i> Fund Wallet
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Toast container -->
+<div id="p-toasts"></div>
+
+<!-- Portal Script -->
+<script src="./portal.js"></script>
+</body>
+</html>
+
